@@ -1,1 +1,65 @@
-<h1>Welcome to the club, buddy!</h1>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вызов API</title>
+    <style>
+        body {
+            background-image: url('images/clones.jpeg');
+            background-size: cover; /* Для полной обтяжки */
+            color: white; /* Цвет текста */
+        }
+        #result, #cloneResult {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333; /* Цвет текста в поле */
+            width: 100%;
+        }
+    </style>
+    <script>
+        function findAllClones() {
+            fetch('/api/v1/clones', {
+                method: 'GET',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сеть ответила неудачно');
+                }
+                return response.json(); // Возвращаем JSON
+            })
+            .then(data => {
+                document.getElementById('result').value = JSON.stringify(data, null, 2); // Выводим форматированный JSON
+            })
+            .catch(error => console.error('Ошибка:', error));
+        }
+
+        function findByNumber() {
+    const cloneId = document.getElementById('cloneId').value;
+    fetch(`/api/v1/clones/${cloneId}`, {
+        method: 'GET',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Сеть ответила неудачно');
+        }
+        return response.json(); // Возвращаем JSON
+    })
+    .then(data => {
+        // Извлечение конкретных значений из JSON
+        const output = `ID: ${data.id}\nNumber: CT-${data.number}\nNickname: ${data.nickname}\nBattalion: ${data.battalion}`;
+        document.getElementById('cloneResult').value = output; // Выводим нужные значения
+    })
+    .catch(error => console.error('Ошибка:', error));
+   }
+    </script>
+</head>
+<body>
+<button id="myButton" type="button" onclick="findAllClones()">Получить список всех клонов</button>
+<textarea id="result" rows="10" cols="50" placeholder="Результат запроса"></textarea> <!-- Поле для вывода результата -->
+
+<input id="cloneId" type="text" placeholder="Введите номер клона" /> <!-- Поле для ввода номера клона -->
+<button id="getCloneButton" type="button" onclick="findByNumber()">Получить клона по номеру</button>
+<textarea id="cloneResult" rows="10" cols="50" placeholder="Результат запроса по номеру клона"></textarea> <!-- Поле для вывода ответа по номеру клона -->
+</body>
+</html>

@@ -14,7 +14,6 @@ public class CloneController {
     private final CloneService service;
     @GetMapping
     public List<Clone> findAllClones() {
-        //TODO
         return service.findAllClones();
     }
 
