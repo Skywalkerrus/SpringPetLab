@@ -15,4 +15,17 @@ public class Clone {
     private Integer number;
     private String nickname;
     private Integer battalion;
+
+    public Clone(Integer number)
+    {
+        this.number = number;
+    }
+    public void cloneArrived() //метод для перегрузки
+    {
+        System.out.println("CT-" + number + " is arrived!");
+    }
+
+    public void cloneArrived(String specialClone) { // перегруженный метод, для отдельного случая с спец клонами
+        System.out.println(specialClone + "CT-" + number + " is arrived!");
+    }
 }
