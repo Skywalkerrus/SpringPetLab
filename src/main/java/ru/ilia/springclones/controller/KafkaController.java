@@ -14,7 +14,7 @@ public class KafkaController {
         this.service = service;
     }
     @PostMapping("/kafka/send/{id}")
-    public String sendMess(@PathVariable int id){
+    public String sendMess(@PathVariable int id) {
         var clone = service.findByNumber(id);
         kafkaProducer.sendMessage(clone.toString());
         return "Success";
