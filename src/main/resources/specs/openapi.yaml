@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: Фабрика клонов спецификация OpenAPI
+  version: 0.0.1
+servers:
+  - url: http://localhost:417/api/v1/
+    description: Dev server
+paths:
+  /clones:
+    get:
+      summary: метод получения всех клонов
+      tags:
+        - Clones
+      operationId: getAllClones
+      responses:
+        '200': 
+          description: Успешный ответ со списком клонов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Clone'
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /clones/{number}:
+    get:
+      summary: метод получения клона по id
+      tags:
+        - Clones
+      operationId: findByNumber
+      parameters:
+      - name: number
+        in: path
+        required: true
+        description: номер клона
+        schema:
+          type: integer
+      responses:
+        '200': 
+          description: Успешный ответ с найденным клоном по number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clone'
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /clones/delete_clone/{number}:
+    delete:
+      summary: delete clone
+      tags:
+        - Clones
+      operationId: deleteClone
+      parameters: 
+      - name: number
+        in: path
+        required: true
+        description: номер клона
+        schema:
+          type: integer
+      responses:
+        '200': 
+          description: Успешный ответ с удаленным клоном по number
+          content:
+            application/json: {}
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Clone:
+      type: object
+      required:
+        - number
+        - nickname
+        - battalion
+      properties:
+        id:
+          type: integer
+          example: 252
+        number:
+          type: integer
+          example: 6116
+        nickname:
+          type: string
+          example: "Kix"
+        battalion:
+          type: integer
+          example: 501
+    Error:
+      type: object
+      required:
+        - code
+        - name
+      properties:
+        code:
+          type: integer
+        name:
+          type: string
+        messages:
+          type: string
